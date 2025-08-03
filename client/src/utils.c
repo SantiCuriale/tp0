@@ -3,15 +3,15 @@
 
 void* serializar_paquete(t_paquete* paquete, int bytes)
 {
-	void * magic = malloc(bytes);
-	int desplazamiento = 0;
+       void * magic = malloc(bytes);
+       int desplazamiento = 0;
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
-	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
-	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	desplazamiento+= paquete->buffer->size;
+       memcpy((char*)magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
+       desplazamiento+= sizeof(int);
+       memcpy((char*)magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
+       desplazamiento+= sizeof(int);
+       memcpy((char*)magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
+       desplazamiento+= paquete->buffer->size;
 
 	return magic;
 }
@@ -77,10 +77,10 @@ t_paquete* crear_paquete(void)
 
 void agregar_a_paquete(t_paquete* paquete, void* valor, int tamanio)
 {
-	paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(int));
+       paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(int));
 
-	memcpy(paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(int));
-	memcpy(paquete->buffer->stream + paquete->buffer->size + sizeof(int), valor, tamanio);
+       memcpy((char*)paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(int));
+       memcpy((char*)paquete->buffer->stream + paquete->buffer->size + sizeof(int), valor, tamanio);
 
 	paquete->buffer->size += tamanio + sizeof(int);
 }
